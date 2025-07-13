@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:algorithms="clr-namespace:Imaging.Algorithms"
+                xmlns:controls="clr-namespace:Imaging.Controls"                
+                xmlns:skiasharp="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
+                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+                xmlns:viewmodels="clr-namespace:Imaging.ViewModels"
+                xmlns:wavelets="clr-namespace:Imaging.Algoriths.Wavelets"
+                x:Class="Imaging.Views.MainPage"
+                x:DataType="viewmodels:MainPageViewModel"
+                Shell.NavBarIsVisible="false">
+        <Grid ColumnDefinitions="0.8*, 0.2*"
+              RowDefinitions="*, 30">
+                <controls:MySKCanvasView CanvasRenderer="{Binding BitmapRenderer}" />
+                <ScrollView Grid.Column="1">
+                        <VerticalStackLayout Margin="10">
+                                <Border Stroke="Black"
+                                        StrokeShape="RoundRectangle 5"
+                                        StrokeThickness="2">
+                                        <toolkit:Expander Margin="10"
+                                                          IsExpanded="True">
+                                                <toolkit:Expander.Header>
+                                                        <Grid>
+                                                                <Label Text="File operations"
+                                                                       FontAttributes="Bold"
+                                                                       FontSize="Medium" />
+                                                                <Image Source="expand.png"
+                                                                       HorizontalOptions="End">
+                                                                        <Image.Triggers>
+                                                                                <DataTrigger TargetType="Image"
+                                                                                             Binding="{Binding Source={RelativeSource AncestorType={x:Type toolkit:Expander}}, x:DataType='toolkit:Expander', Path=IsExpanded}"
+                                                                                             Value="True">
+                                                                                        <Setter Property="Source"
+                                                                                                Value="collapse.png" />        
+                                                                                </DataTrigger>
+                                                                        </Image.Triggers>
+                                                                </Image>
+                                                        </Grid>
+                                                </toolkit:Expander.Header>
+                                                <VerticalStackLayout Margin="10">
+                                                        <Button Text="Load photo"
+                                                                Command="{Binding LoadImageCommand}" />
+                                                        <Button Text="Save photo"
+                                                                Command="{Binding SaveImageCommand}" />
+                                                        <Label Text="Save format:" />
+                                                        <HorizontalStackLayout RadioButtonGroup.GroupName="saveFormat"
+                                                                               RadioButtonGroup.SelectedValue="{Binding ImageSaveFormat}">
+                                                                <RadioButton Content="PNG"
+                                                                        Value="PNG" />
+                                                                <RadioButton Content="JPEG"
+                                                                        Value="JPEG" />
+                                                        </HorizontalStackLayout>
+                                                        <Slider x:Name="qualitySlider"
+                                                                Maximum="100"
+                                                                Value ="{Binding ImageQuality}" />
+                                                        <Label Text="{Binding Source={x:Reference qualitySlider}, x:DataType=Slider, Path=Value, StringFormat='Quality = {0:F0}'}"
+                                                               HorizontalTextAlignment="Center" />
+                                                </VerticalStackLayout>
+                                        </toolkit:Expander>
+                                </Border>
+                                <Border Stroke="Black"
+                                        StrokeShape="RoundRectangle 5"
+                                        StrokeThickness="2">
+                                        <toolkit:Expander Margin="10">
+                                                <toolkit:Expander.Header>
+                                                        <Grid>
+                                                                <Label Text="Per pixel operations"
+                                                                       FontAttributes="Bold"
+                                                                       FontSize="Medium" />
+                                                                <Image Source="expand.png"
+                                                                        HorizontalOptions="End">
+                                                                        <Image.Triggers>
+                                                                                <DataTrigger TargetType="Image"
+                                                                                             Binding="{Binding Source={RelativeSource AncestorType={x:Type toolkit:Expander}}, x:DataType='toolkit:Expander', Path=IsExpanded}"
+                                                                                             Value="True">
+                                                                                        <Setter Property="Source"
+                                                                                                Value="collapse.png" />        
+                                                                                </DataTrigger>
+                                                                        </Image.Triggers>
+                                                                </Image>       
+                                                        </Grid>                                                        
+                                                </toolkit:Expander.Header>
+                                                <VerticalStackLayout Margin="10">
+                                                        <Button Text="Greyscale"
+                                                                Command="{Binding GreyscaleImageCommand}" />
+                                                        <Button Text="Otsu Threshold"
+                                                                Command="{Binding ThresholdImageCommand}" />
+                                                        <Button Text="Sepia"
+                                                                Command="{Binding SepiaImageCommand}" />
+                                                </VerticalStackLayout>
+                                        </toolkit:Expander>
+                                </Border>
+                                <Border Stroke="Black"
+                                        StrokeShape="RoundRectangle 5"
+                                        StrokeThickness="2">
+                                        <toolkit:Expander Margin="10">
+                                                <toolkit:Expander.Header>
+                                                        <Grid>
+                                                                <Label Text="Convolution kernels"
+                                                                       FontAttributes="Bold"
+                                                                       FontSize="Medium" />
+                                                                <Image Source="expand.png"
+                                                                       HorizontalOptions="End">
+                                                                        <Image.Triggers>
+                                                                                <DataTrigger TargetType="Image"
+                                                                                             Binding="{Binding Source={RelativeSource AncestorType={x:Type toolkit:Expander}}, x:DataType='toolkit:Expander', Path=IsExpanded}"
+                                                                                             Value="True">
+                                                                                        <Setter Property="Source"
+                                                                                                Value="collapse.png" />        
+                                                                                </DataTrigger>
+                                                                        </Image.Triggers>
+                                                                </Image>   
+                                                        </Grid>
+                                                </toolkit:Expander.Header>                                        
+                                                <VerticalStackLayout Margin="10">
+                                                        <Label Text="Select a convolution kernel:" />
+                                                        <controls:PropertyCollectionView HeightRequest="200"
+                                                                                         WidthRequest="150"
+                                                                                         SelectionMode="Single"
+                                                                                         SelectedItem="{Binding ConvolutionKernel}"
+                                                                                         ClassType="{x:Type algorithms:ConvolutionKernels}" />                                                           
+                                                        <Button Text="Process"
+                                                                Command="{Binding PerformConvolutionCommand}" />
+                                                </VerticalStackLayout>
+                                        </toolkit:Expander>
+                                </Border>                        
+                                <Border Stroke="Black"
+                                        StrokeShape="RoundRectangle 5"
+                                        StrokeThickness="2">
+                                        <toolkit:Expander Margin="10">
+                                                <toolkit:Expander.Header>
+                                                        <Grid>
+                                                                <Label Text="2D FFT"
+                                                                       FontAttributes="Bold"
+                                                                       FontSize="Medium" />
+                                                                <Image Source="expand.png"
+                                                                       HorizontalOptions="End">
+                                                                        <Image.Triggers>
+                                                                                <DataTrigger TargetType="Image"
+                                                                                             Binding="{Binding Source={RelativeSource AncestorType={x:Type toolkit:Expander}}, x:DataType='toolkit:Expander', Path=IsExpanded}"
+                                                                                             Value="True">
+                                                                                        <Setter Property="Source"
+                                                                                                Value="collapse.png" />        
+                                                                                </DataTrigger>
+                                                                        </Image.Triggers>
+                                                                </Image>   
+                                                        </Grid>
+                                                </toolkit:Expander.Header>                                        
+                                                <VerticalStackLayout Margin="10">
+                                                        <Slider x:Name="minSlider"
+                                                                Maximum="1024"
+                                                                Minimum="0"
+                                                                Value="{Binding MinFrequency}"
+                                                                IsEnabled="{Binding IsLoaded}" />
+                                                        <Label Text="{Binding Source={x:Reference minSlider}, x:DataType=Slider, Path=Value, StringFormat='Min = {0:F0}'}"
+                                                               HorizontalOptions="Center" />
+                                                        <Slider x:Name="maxSlider" 
+                                                                Maximum="1024"
+                                                                Minimum="0"
+                                                                Value="{Binding MaxFrequency}"
+                                                                IsEnabled="{Binding IsLoaded}" />
+                                                        <Label Text="{Binding Source={x:Reference maxSlider}, x:DataType=Slider, Path=Value, StringFormat='Max = {0:F0}'}"
+                                                               HorizontalTextAlignment="Center" />
+                                                        <Button Text="Process"
+                                                                Command="{Binding FrequencyFilterImageCommand}" />
+                                                </VerticalStackLayout>
+                                        </toolkit:Expander>
+                                </Border>   
+                                <Border Stroke="Black"
+                                        StrokeShape="RoundRectangle 5"
+                                        StrokeThickness="2">
+                                        <toolkit:Expander Margin="10">
+                                                <toolkit:Expander.Header>
+                                                        <Grid>
+                                                                <Label Text="2D wavelet transform"
+                                                                       FontAttributes="Bold"
+                                                                       FontSize="Medium" />                                                                
+                                                                <Image Source="expand.png"
+                                                                       HorizontalOptions="End">
+                                                                        <Image.Triggers>
+                                                                                <DataTrigger TargetType="Image"
+                                                                                             Binding="{Binding Source={RelativeSource AncestorType={x:Type toolkit:Expander}}, x:DataType='toolkit:Expander', Path=IsExpanded}"
+                                                                                             Value="True">
+                                                                                        <Setter Property="Source"
+                                                                                                Value="collapse.png" />        
+                                                                                </DataTrigger>
+                                                                        </Image.Triggers>
+                                                                </Image>                                                                   
+                                                        </Grid>
+                                                </toolkit:Expander.Header>                                        
+                                                <VerticalStackLayout Margin="10">
+                                                        <Label Text="Select wavelet operation:" />
+                                                        <controls:EnumCollectionView HeightRequest="80"
+                                                                                     WidthRequest="150"
+                                                                                     SelectionMode="Single"
+                                                                                     SelectedItem="{Binding WaveletAlgorithm}"
+                                                                                     EnumType="{x:Type wavelets:WaveletOperation}" />                                                        
+                                                        <Label Text="Select a wavelet:" />
+                                                        <HorizontalStackLayout RadioButtonGroup.GroupName="wavelet"
+                                                                               RadioButtonGroup.SelectedValue="{Binding SelectedWavelet}">
+                                                                <RadioButton Content="Haar"
+                                                                             Value="Haar" />
+                                                                <RadioButton Content="Biorthogonal 5/3"
+                                                                             Value="Biorthogonal53" />
+                                                        </HorizontalStackLayout>
+                                                        <Button Text="Process"
+                                                                Command="{Binding WaveletTransformImageCommand}" />
+                                                </VerticalStackLayout>
+                                        </toolkit:Expander>
+                                </Border>   
+                        </VerticalStackLayout>
+                </ScrollView>                       
+                <Label Grid.Row="1"
+                       Grid.ColumnSpan="1"
+                       Margin="10,0,0,0"
+                       Text="{Binding SaveStatusMessage}" />
+        </Grid>
+</ContentPage>
