@@ -1,8 +1,6 @@
 # 2D imaging using SkiaSharp
 
-This repo contains a prototype that that shows how to perform 2D image processing using SkiaSharp, hosted in a .NET MAUI app that targets Mac Catalyst.
-
-With a little work the app could also target iOS and Android. Targeting Windows requires more work due to Windows using a different pixel format.
+This repo contains a prototype that shows how to perform 2D image processing with SkiaSharp, hosted in a .NET MAUI app that targets Mac Catalyst. With a little work the app could also target iOS and Android. Targeting Windows requires more work due to Windows using a different pixel format.
 
 The app performs the following operations:
 
