@@ -13,4 +13,6 @@ The app performs the following operations:
 - Performs frequency filtering using a Fast Fourier Transform.
 - Performs image upscaling and adaptive sharpening using an asymmetric wavelet transform.
 
-The app's architected to use MVVM, with MVVM support coming from CommunityToolkit.Mvvm.
+With the exception of the convolution operations, all other algorithms manipulate image data at the pixel level.
+
+The app uses the MVVM pattern, with MVVM support coming from CommunityToolkit.Mvvm.
