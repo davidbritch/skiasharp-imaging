@@ -5,7 +5,7 @@ namespace Imaging.Algorithms.FFT;
 public static class FourierTransform
 {
     const int MinLength = 2;
-    const int NaxLength = 16384;
+    const int MaxLength = 16384;
     const int MinBits = 1;
     const int MaxBits = 14;
     static int[][] reversedBits = new int[MaxBits][];
@@ -65,8 +65,8 @@ public static class FourierTransform
 
         // Check data size
         if ((!MathHelpers.IsPowerOf2(k)) || (!MathHelpers.IsPowerOf2(n)) ||
-            (k < MinLength) || (k > NaxLength) ||
-            (n < MinLength) || (n > NaxLength))
+            (k < MinLength) || (k > MaxLength) ||
+            (n < MinLength) || (n > MaxLength))
         {
             throw new ArgumentException("Incorrect data length.");
         }
@@ -108,7 +108,7 @@ public static class FourierTransform
         // Check if the array is already calculated
         if (reversedBits[numberOfBits - 1] == null)
         {
-            int n = (int)Math.Pow(numberOfBits, 2);
+            int n = MathHelpers.LeftShift(numberOfBits);
             int[] rBits = new int[n];
 
             // Calculate the array
@@ -163,7 +163,7 @@ public static class FourierTransform
         int length = data.Length;
 
         // Check data length
-        if ((length < MinLength) || (length > NaxLength) || (!MathHelpers.IsPowerOf2(length)))
+        if ((length < MinLength) || (length > MaxLength) || (!MathHelpers.IsPowerOf2(length)))
             throw new ArgumentException("Incorrect data length.");
 
         int[] rBits = GetReversedBits((int)Math.Log2(length));
