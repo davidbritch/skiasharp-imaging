@@ -292,6 +292,31 @@ public static class SKBitmapExtensions
         return pixmap;
     }
 
+    static unsafe SKPixmap ToRGBAPixmap(this SKBitmap bitmap, float[,] y)
+    {
+        if (y == null)
+            throw new ArgumentException("y can't be null");
+
+        SKPixmap pixmap = bitmap.PeekPixels();
+        byte* bmpPtr = (byte*)pixmap.GetPixels().ToPointer();
+        int width = bitmap.Width;
+        int height = bitmap.Height;
+
+        for (int row = 0; row < height; row++)
+        {
+            for (int col = 0; col < width; col++)
+            {
+                // Assuming SKColorType.Rgba8888 - used by Apple platforms and Android
+                byte result = (byte)Math.Max(0, Math.Min(255, y[col, row]));
+                *bmpPtr++ = result; // red
+                *bmpPtr++ = result; // green
+                *bmpPtr++ = result; // blue
+                bmpPtr += 1; // Ignore alpha
+            }
+        }
+        return pixmap;
+    }
+
     public static unsafe SKPixmap WaveletUpscale(this SKBitmap bitmap, Wavelet wavelet)
     {
         int width = bitmap.Width;
@@ -299,10 +324,10 @@ public static class SKBitmapExtensions
         int upscaledWidth = width * 2;
         int upscaledHeight = height * 2;
 
-        float[,] y = new float[upscaledWidth, upscaledWidth];
-        float[,] cb = new float[upscaledWidth, upscaledWidth];
-        float[,] cr = new float[upscaledWidth, upscaledWidth];
-        float[,] a = new float[upscaledWidth, upscaledWidth];
+        float[,] y = new float[upscaledWidth, upscaledHeight];
+        float[,] cb = new float[upscaledWidth, upscaledHeight];
+        float[,] cr = new float[upscaledWidth, upscaledHeight];
+        float[,] a = new float[upscaledWidth, upscaledHeight];
 
         bitmap.ToYCbCrAArrays(y, cb, cr, a);
 

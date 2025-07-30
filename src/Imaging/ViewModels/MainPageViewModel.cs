@@ -271,7 +271,8 @@ public partial class MainPageViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanWaveletTransformImage))]
     void WaveletTransformImage()
     {
-        WaveletOperation operation = WaveletAlgorithm == WaveletOperation.AdaptiveSharpening.ToString() ? WaveletOperation.AdaptiveSharpening : WaveletOperation.ImageUpscaling;
+        string algorithm = WaveletAlgorithm.Replace(" ", string.Empty);
+        WaveletOperation operation = algorithm == WaveletOperation.AdaptiveSharpening.ToString() ? WaveletOperation.AdaptiveSharpening : WaveletOperation.ImageUpscaling;
         Wavelet wavelet = SelectedWavelet == Wavelet.Biorthogonal53.ToString() ? Wavelet.Biorthogonal53 : Wavelet.Haar;
 
         if (operation == WaveletOperation.AdaptiveSharpening)
