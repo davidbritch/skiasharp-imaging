@@ -16,3 +16,10 @@ The app performs the following operations:
 With the exception of the convolution operations, all other algorithms manipulate image data at the pixel level.
 
 The app uses the MVVM pattern, with MVVM support coming from CommunityToolkit.Mvvm.
+
+For more information, see the following blog posts:
+
+- [SkiaSharp and MVVM](https://davestechlab.co.uk/skiasharp-and-mvvm/)
+- [Getting pixel data with SkiaSharp](https://davestechlab.co.uk/getting-pixel-data-with-skiasharp/)
+- [Performing convolution in SkiaSharp](https://davestechlab.co.uk/performing-convolution-in-skiasharp/)
+- [Frequency filtering in SkiaSharp](https://davestechlab.co.uk/frequency-filtering-in-skiasharp/)
