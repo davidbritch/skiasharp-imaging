@@ -23,3 +23,4 @@ For more information, see the following blog posts:
 - [Getting pixel data with SkiaSharp](https://davestechlab.co.uk/getting-pixel-data-with-skiasharp/)
 - [Performing convolution in SkiaSharp](https://davestechlab.co.uk/performing-convolution-in-skiasharp/)
 - [Frequency filtering in SkiaSharp](https://davestechlab.co.uk/frequency-filtering-in-skiasharp/)
+- [Wavelet transforms in SkiaSharp](https://davestechlab.co.uk/wavelet-transforms-in-skiasharp/)
